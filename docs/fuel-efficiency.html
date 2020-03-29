@@ -27,6 +27,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -368,7 +370,13 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/ogorodriguez/00_Supervised_Learning">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -496,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong8246a7c"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 8246a7c </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtree4357344144199b78700d51f518ed46dfbd7cddf9targetblank4357344a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/4357344144199b78700d51f518ed46dfbd7cddf9" target="_blank">4357344</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong8246a7c" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtree4357344144199b78700d51f518ed46dfbd7cddf9targetblank4357344a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 8246a7c. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/4357344144199b78700d51f518ed46dfbd7cddf9" target="_blank">4357344</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -518,6 +526,16 @@ Ignored files:
 Untracked files:
     Untracked:  data/c1_cars_vars_full.rds
     Untracked:  data/cars2018.csv
+    Untracked:  output/car_test.rds
+    Untracked:  output/car_train.rds
+    Untracked:  output/cars_vars2.rds
+    Untracked:  output/fit_lm2.rds
+    Untracked:  output/fit_rf.rds
+    Untracked:  output/results_test.rds
+    Untracked:  output/results_train.rds
+
+Unstaged changes:
+    Modified:   README.md
 
 </code></pre>
 <p>
@@ -561,7 +579,41 @@ Message
 Rmd
 </td>
 <td>
-8246a7c
+<a href="https://github.com/ogorodriguez/00_Supervised_Learning/blob/4357344144199b78700d51f518ed46dfbd7cddf9/analysis/fuel-efficiency.Rmd" target="_blank">4357344</a>
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2020-03-29
+</td>
+<td>
+Evaluation of linear reg and ranforest with yardstick
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ogorodriguez/00_Supervised_Learning/05d430aed6294d74e631a84a5d3ed0e6bb56c67c/docs/fuel-efficiency.html" target="_blank">05d430a</a>
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2020-03-29
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ogorodriguez/00_Supervised_Learning/blob/8246a7c0aab75c8ff09bbfa138d7b09bcab3259c/analysis/fuel-efficiency.Rmd" target="_blank">8246a7c</a>
 </td>
 <td>
 ogorodriguez
@@ -855,6 +907,9 @@ car_testing &lt;- rsample::testing(car_split)</code></pre>
 <p>At first we can see that from the 916 observations of our training sample it identified 14 predictors. In comparison the lm() from base R identified 13. In this case the r_squared is less then in base R (0.6 compared to 0.7 in base R.)</p>
 <p>The evaluation can be done also using the yardstick package.</p>
 </div>
+</div>
+<div id="the-yardstick-package" class="section level3">
+<h3>The yardstick package</h3>
 <div id="evaluation-the-model-with-yardstick" class="section level4">
 <h4>Evaluation the model with yardstick</h4>
 <p>I will practice again with a new dataset imported for this course.</p>
@@ -909,6 +964,76 @@ car_test &lt;- rsample::testing(car_split2)</code></pre>
 #&gt; 
 #&gt; No pre-processing
 #&gt; Resampling: None</code></pre>
+</div>
+<div id="the-evaluation" class="section level4">
+<h4>The evaluation</h4>
+<p>For the evaluation we will need to create a dataframe with both our train datasets that includes both our models and after that, run the metrics() function from the yardsticks package.</p>
+<pre class="r"><code>library(yardstick)
+
+# The dataframe will be called results that will include the training set used to create the lm and the rf models
+results_train &lt;- car_train %&gt;% 
+  mutate(mpg_log = log(mpg),
+         lreg = predict(fit_lm2, car_train),
+         rfor = predict(fit_rf, car_train)) %&gt;% 
+  select(mpg, mpg_log, lreg, rfor, everything())
+  </code></pre>
+<p>Let’s see this new dataset</p>
+<pre class="r"><code>results_train %&gt;% 
+  glimpse()
+#&gt; Observations: 916
+#&gt; Variables: 16
+#&gt; $ mpg                     &lt;int&gt; 21, 28, 17, 18, 17, 18, 26, 20, 11, 18, 16,...
+#&gt; $ mpg_log                 &lt;dbl&gt; 3.044522, 3.332205, 2.833213, 2.890372, 2.8...
+#&gt; $ lreg                    &lt;dbl&gt; 2.959295, 3.189499, 2.818505, 2.832572, 2.8...
+#&gt; $ rfor                    &lt;dbl&gt; 3.054315, 3.269829, 2.797044, 2.828388, 2.7...
+#&gt; $ displacement            &lt;dbl&gt; 3.5, 1.8, 5.2, 5.2, 5.2, 5.2, 2.0, 3.0, 8.0...
+#&gt; $ cylinders               &lt;int&gt; 6, 4, 10, 10, 10, 10, 4, 6, 16, 8, 8, 8, 8,...
+#&gt; $ gears                   &lt;int&gt; 9, 6, 7, 7, 7, 7, 6, 7, 7, 8, 8, 7, 7, 7, 7...
+#&gt; $ transmission            &lt;chr&gt; &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;Ma...
+#&gt; $ aspiration              &lt;chr&gt; &quot;Turbocharged/Supercharged&quot;, &quot;Turbocharged/...
+#&gt; $ lockup_torque_converter &lt;chr&gt; &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;N&quot;, &quot;Y&quot;...
+#&gt; $ drive                   &lt;chr&gt; &quot;All Wheel Drive&quot;, &quot;2-Wheel Drive, Rear&quot;, &quot;...
+#&gt; $ max_ethanol             &lt;int&gt; 10, 10, 15, 15, 15, 15, 15, 10, 15, 10, 10,...
+#&gt; $ recommended_fuel        &lt;chr&gt; &quot;Premium Unleaded Required&quot;, &quot;Premium Unlea...
+#&gt; $ intake_valves_per_cyl   &lt;int&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2...
+#&gt; $ exhaust_valves_per_cyl  &lt;int&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2...
+#&gt; $ fuel_injection          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Dire...</code></pre>
+<p>Now let’s evaluate the performance.</p>
+<pre class="r"><code>yardstick::metrics(results_train, truth = mpg, estimate = lreg)
+#&gt; # A tibble: 3 x 3
+#&gt;   .metric .estimator .estimate
+#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+#&gt; 1 rmse    standard      20.9  
+#&gt; 2 rsq     standard       0.724
+#&gt; 3 mae     standard      20.1</code></pre>
+<pre class="r"><code>yardstick::metrics(results_train, truth = mpg, estimate = rfor)
+#&gt; # A tibble: 3 x 3
+#&gt;   .metric .estimator .estimate
+#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+#&gt; 1 rmse    standard      20.9  
+#&gt; 2 rsq     standard       0.854
+#&gt; 3 mae     standard      20.1</code></pre>
+<p>Let’s see hot these models do on the testing data.</p>
+<pre class="r"><code>results_test &lt;- car_test %&gt;% 
+  mutate(mpg_log = log(mpg),
+         lreg = predict(fit_lm2, car_test),
+         rfor = predict(fit_rf, car_test)) %&gt;% 
+  select(mpg, mpg_log, lreg, rfor, everything())
+  </code></pre>
+<pre class="r"><code>yardstick::metrics(results_test, truth = mpg, estimate = lreg)
+#&gt; # A tibble: 3 x 3
+#&gt;   .metric .estimator .estimate
+#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+#&gt; 1 rmse    standard      20.5  
+#&gt; 2 rsq     standard       0.719
+#&gt; 3 mae     standard      19.9</code></pre>
+<pre class="r"><code>yardstick::metrics(results_train, truth = mpg, estimate = rfor)
+#&gt; # A tibble: 3 x 3
+#&gt;   .metric .estimator .estimate
+#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+#&gt; 1 rmse    standard      20.9  
+#&gt; 2 rsq     standard       0.854
+#&gt; 3 mae     standard      20.1</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
