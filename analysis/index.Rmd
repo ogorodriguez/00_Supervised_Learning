@@ -8,4 +8,43 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+*Welcome.* 
+
+This website will contain my practice with the Course "Supervised Learning with R: Case Studies" by Julia Silge.
+
+The course is freely available from [Julia's website.](https://supervised-ml-course.netlify.com/)
+
+*A brief introduction*
+
+Supervised Learning is also known as predictive modeling.  This method of analysis helps create formulas or models that will help us estimate the outcome of a variable at very low margin levels of error.  
+
+This course is an introduction to this method and it contains definitions used the analysis done in this field of study.  
+
+This course contains easy examples and cases divided into four modules.  Each module will be detailed with my learning notes together in it.
+
+### Making predictions using maching learning
+
+In thi section we will:
+
+ - use EDA to prepare the data from predictive modeling.
+ - explore which model to choose depending on the data
+ - implement supervised ML for classification and regression
+ 
+### Regression and Classification
+
+The two types of models to train (use) are regressioin and classification.  Regression refers to predicting a numeric or continous variable.  Classification refers to predicting a discreet varialbe such as classes, categories, or labels.  
+ 
+
+### Course Modules
+
+Each module will be focused in predicting various outcomes:
+
+ 1. [Fuel Efficiency: US motor vehicles](fuel-efficiency.html)
+ 
+ 2. [Employees that are working remotely]
+ 
+ 3. [Vote Turnout: US]
+ 
+ 4. [Age of Nuns]
+
+

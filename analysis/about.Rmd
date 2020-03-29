@@ -7,4 +7,10 @@ editor_options:
   chunk_output_type: console
 ---
 
-Describe your project.
+This website will contain my practice with the Course "Supervised Learning with R: Case Studies" by Julia Silge.
+
+The course is freely available from [Julia's website.](https://supervised-ml-course.netlify.com/)
+
+It will contains links to all modules and the excersises and notes within.
+
+

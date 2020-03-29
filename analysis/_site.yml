@@ -1,7 +1,7 @@
-name: "00_Supervised_Learning"
+name: "Supervised Learning in R Case Studies"
 output_dir: ../docs
 navbar:
-  title: "00_Supervised_Learning"
+  title: "Supervised Learning in R Case Studies"
   left:
   - text: Home
     href: index.html
@@ -13,5 +13,5 @@ output:
   workflowr::wflow_html:
     toc: yes
     toc_float: yes
-    theme: cosmo
+    theme: simplex
     highlight: textmate
