@@ -1,7 +1,7 @@
-name: "Supervised Learning in R Case Studies"
+name: Supervised Learning in R Case Studies
 output_dir: ../docs
 navbar:
-  title: "Supervised Learning in R Case Studies"
+  title: Supervised Learning in R Case Studies
   left:
   - text: Home
     href: index.html
@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fa-github
+    text: Source code
+    href: https://github.com/00_supervised_learning/00_Supervised_Learning
 output:
   workflowr::wflow_html:
     toc: yes
