@@ -395,7 +395,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -404,7 +404,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -416,7 +416,7 @@ div.tocify {
 <strong>Last updated:</strong> 2020-03-29
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>00_Supervised_Learning/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -432,12 +432,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtreeb29089c8064bcc388937202cc3084c2c596b3566targetblankb29089ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/b29089c8064bcc388937202cc3084c2c596b3566" target="_blank">b29089c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtree4faa5fb04ea574436c318988d7c8910f828c23d6targetblank4faa5fba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/4faa5fb04ea574436c318988d7c8910f828c23d6" target="_blank">4faa5fb</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtreeb29089c8064bcc388937202cc3084c2c596b3566targetblankb29089ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtree4faa5fb04ea574436c318988d7c8910f828c23d6targetblank4faa5fba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/b29089c8064bcc388937202cc3084c2c596b3566" target="_blank">b29089c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/4faa5fb04ea574436c318988d7c8910f828c23d6" target="_blank">4faa5fb</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -525,9 +525,12 @@ Ignored files:
 
 Untracked files:
     Untracked:  data/c1_cars_vars_full.rds
+    Untracked:  data/c1_training_one_percent.rds
     Untracked:  data/cars2018.csv
     Untracked:  output/car_test.rds
     Untracked:  output/car_train.rds
+    Untracked:  output/cars_lm_bt.rds
+    Untracked:  output/cars_rf_bt.rds
     Untracked:  output/cars_vars2.rds
     Untracked:  output/fit_lm2.rds
     Untracked:  output/fit_rf.rds
@@ -536,6 +539,7 @@ Untracked files:
 
 Unstaged changes:
     Modified:   README.md
+    Modified:   analysis/fuel-efficiency.Rmd
 
 </code></pre>
 <p>
@@ -574,6 +578,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ogorodriguez/00_Supervised_Learning/4faa5fb04ea574436c318988d7c8910f828c23d6/docs/fuel-efficiency.html" target="_blank">4faa5fb</a>
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2020-03-29
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1034,20 +1055,20 @@ results_train &lt;- car_train %&gt;%
 #&gt; $ exhaust_valves_per_cyl  &lt;int&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2...
 #&gt; $ fuel_injection          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Dire...</code></pre>
 <p>Now let’s evaluate the performance.</p>
-<pre class="r"><code>yardstick::metrics(results_train, truth = mpg, estimate = lreg)
+<pre class="r"><code>yardstick::metrics(results_train, truth = mpg_log, estimate = lreg)
 #&gt; # A tibble: 3 x 3
 #&gt;   .metric .estimator .estimate
 #&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-#&gt; 1 rmse    standard      20.9  
-#&gt; 2 rsq     standard       0.724
-#&gt; 3 mae     standard      20.1</code></pre>
-<pre class="r"><code>yardstick::metrics(results_train, truth = mpg, estimate = rfor)
+#&gt; 1 rmse    standard      0.0989
+#&gt; 2 rsq     standard      0.812 
+#&gt; 3 mae     standard      0.0735</code></pre>
+<pre class="r"><code>yardstick::metrics(results_train, truth = mpg_log, estimate = rfor)
 #&gt; # A tibble: 3 x 3
 #&gt;   .metric .estimator .estimate
 #&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-#&gt; 1 rmse    standard      20.9  
-#&gt; 2 rsq     standard       0.854
-#&gt; 3 mae     standard      20.1</code></pre>
+#&gt; 1 rmse    standard      0.0665
+#&gt; 2 rsq     standard      0.918 
+#&gt; 3 mae     standard      0.0477</code></pre>
 <p>Let’s see hot these models do on the testing data.</p>
 <pre class="r"><code>results_test &lt;- car_test %&gt;% 
   mutate(mpg_log = log(mpg),
@@ -1055,20 +1076,87 @@ results_train &lt;- car_train %&gt;%
          rfor = predict(fit_rf, car_test)) %&gt;% 
   select(mpg, mpg_log, lreg, rfor, everything())
   </code></pre>
-<pre class="r"><code>yardstick::metrics(results_test, truth = mpg, estimate = lreg)
+<pre class="r"><code>yardstick::metrics(results_test, truth = mpg_log, estimate = lreg)
 #&gt; # A tibble: 3 x 3
 #&gt;   .metric .estimator .estimate
 #&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-#&gt; 1 rmse    standard      20.5  
-#&gt; 2 rsq     standard       0.719
-#&gt; 3 mae     standard      19.9</code></pre>
-<pre class="r"><code>yardstick::metrics(results_train, truth = mpg, estimate = rfor)
+#&gt; 1 rmse    standard      0.104 
+#&gt; 2 rsq     standard      0.783 
+#&gt; 3 mae     standard      0.0769</code></pre>
+<pre class="r"><code>yardstick::metrics(results_train, truth = mpg_log, estimate = rfor)
 #&gt; # A tibble: 3 x 3
 #&gt;   .metric .estimator .estimate
 #&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-#&gt; 1 rmse    standard      20.9  
-#&gt; 2 rsq     standard       0.854
-#&gt; 3 mae     standard      20.1</code></pre>
+#&gt; 1 rmse    standard      0.0665
+#&gt; 2 rsq     standard      0.918 
+#&gt; 3 mae     standard      0.0477</code></pre>
+</div>
+</div>
+<div id="bootstrapping" class="section level2">
+<h2>Bootstrapping</h2>
+<p>Now we are going to use methods to refine the model that a simple linear regression may not be so in tune for.</p>
+<p>One of those is bootstrapping. Bootstrapping is simply getting a sample with replacement. The methods here in R may take longer since we can have as many samples as necessary. The system will run the model that number of times and will deliver an average result.</p>
+<p>Due to the heavy load of the work, there is a reduced dataset already available in the course for us to work with with 1% of the data.</p>
+<pre class="r"><code>car_train_1p &lt;- readr::read_rds(&quot;data/c1_training_one_percent.rds&quot;) %&gt;% janitor::clean_names()</code></pre>
+<pre class="r"><code>car_train_1p %&gt;% 
+  glimpse()
+#&gt; Observations: 93
+#&gt; Variables: 13
+#&gt; $ displacement            &lt;dbl&gt; 2.0, 2.5, 2.0, 2.4, 2.7, 3.0, 6.4, 3.3, 2.0...
+#&gt; $ cylinders               &lt;int&gt; 4, 4, 4, 4, 4, 6, 8, 6, 4, 6, 8, 6, 4, 4, 4...
+#&gt; $ gears                   &lt;int&gt; 7, 6, 8, 6, 6, 8, 8, 6, 6, 10, 7, 6, 6, 6, ...
+#&gt; $ transmission            &lt;chr&gt; &quot;Manual&quot;, &quot;Manual&quot;, &quot;Automatic&quot;, &quot;Automatic...
+#&gt; $ mpg                     &lt;int&gt; 27, 22, 29, 23, 20, 23, 18, 20, 29, 19, 18,...
+#&gt; $ aspiration              &lt;chr&gt; &quot;Turbocharged/Supercharged&quot;, &quot;Naturally Asp...
+#&gt; $ lockup_torque_converter &lt;chr&gt; &quot;Y&quot;, &quot;N&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;...
+#&gt; $ drive                   &lt;chr&gt; &quot;All Wheel Drive&quot;, &quot;2-Wheel Drive, Rear&quot;, &quot;...
+#&gt; $ max_ethanol             &lt;int&gt; 15, 10, 10, 15, 15, 10, 10, 85, 10, 15, 10,...
+#&gt; $ recommended_fuel        &lt;chr&gt; &quot;Premium Unleaded Recommended&quot;, &quot;Regular Un...
+#&gt; $ intake_valves_per_cyl   &lt;int&gt; 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2...
+#&gt; $ exhaust_valves_per_cyl  &lt;int&gt; 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2...
+#&gt; $ fuel_injection          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Dire...</code></pre>
+<p>Let’s run the models</p>
+<pre class="r"><code>cars_lm_bt &lt;- train(log(mpg) ~ .,
+                    method = &quot;lm&quot;,
+                    data = car_train_1p,
+                    trControl = trainControl(method = &quot;boot&quot;))</code></pre>
+<pre class="r"><code>cars_lm_bt
+#&gt; Linear Regression 
+#&gt; 
+#&gt; 93 samples
+#&gt; 12 predictors
+#&gt; 
+#&gt; No pre-processing
+#&gt; Resampling: Bootstrapped (25 reps) 
+#&gt; Summary of sample sizes: 93, 93, 93, 93, 93, 93, ... 
+#&gt; Resampling results:
+#&gt; 
+#&gt;   RMSE        Rsquared   MAE      
+#&gt;   0.09194264  0.8308545  0.0718651
+#&gt; 
+#&gt; Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
+<pre class="r"><code>cars_rf_bt &lt;- train(log(mpg) ~ .,
+                    method = &quot;rf&quot;,
+                    data = car_train_1p,
+                    trControl = trainControl(method = &quot;boot&quot;))</code></pre>
+<pre class="r"><code>cars_rf_bt
+#&gt; Random Forest 
+#&gt; 
+#&gt; 93 samples
+#&gt; 12 predictors
+#&gt; 
+#&gt; No pre-processing
+#&gt; Resampling: Bootstrapped (25 reps) 
+#&gt; Summary of sample sizes: 93, 93, 93, 93, 93, 93, ... 
+#&gt; Resampling results across tuning parameters:
+#&gt; 
+#&gt;   mtry  RMSE        Rsquared   MAE       
+#&gt;    2    0.11276294  0.8143914  0.08652538
+#&gt;    9    0.09281693  0.8322639  0.07181900
+#&gt;   16    0.09575833  0.8150113  0.07260717
+#&gt; 
+#&gt; RMSE was used to select the optimal model using the smallest value.
+#&gt; The final value used for the model was mtry = 9.</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1145,7 +1233,6 @@ results_train &lt;- car_train %&gt;%
 #&gt; [127] snakecase_0.11.0     rmarkdown_2.1        git2r_0.26.1        
 #&gt; [130] pROC_1.16.1          tidypredict_0.4.5    shiny_1.4.0         
 #&gt; [133] lubridate_1.7.4      base64enc_0.1-3      dygraphs_1.1.1.6</code></pre>
-</div>
 </div>
 </div>
 

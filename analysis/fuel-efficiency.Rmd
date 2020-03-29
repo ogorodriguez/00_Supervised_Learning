@@ -288,11 +288,11 @@ results_train %>%
 Now let's evaluate the performance.
 
 ```{r}
-yardstick::metrics(results_train, truth = mpg, estimate = lreg)
+yardstick::metrics(results_train, truth = mpg_log, estimate = lreg)
 ```
 
 ```{r}
-yardstick::metrics(results_train, truth = mpg, estimate = rfor)
+yardstick::metrics(results_train, truth = mpg_log, estimate = rfor)
 ```
 
 Let's see hot these models do on the testing data.
@@ -307,18 +307,54 @@ results_test <- car_test %>%
 ```
 
 ```{r}
-yardstick::metrics(results_test, truth = mpg, estimate = lreg)
+yardstick::metrics(results_test, truth = mpg_log, estimate = lreg)
 ```
 
 ```{r}
-yardstick::metrics(results_train, truth = mpg, estimate = rfor)
+yardstick::metrics(results_train, truth = mpg_log, estimate = rfor)
+```
+
+## Bootstrapping
+
+Now we are going to use methods to refine the model that a simple linear regression may not be so in tune for.  
+
+One of those is bootstrapping.   Bootstrapping is simply getting a sample with replacement.  The methods here in R may take longer since we can have as many samples as necessary.  The system will run the model that number of times and will deliver an average result.
+
+Due to the heavy load of the work, there is a reduced dataset already available in the course for us to work with with 1% of the data.  
+
+```{r}
+car_train_1p <- readr::read_rds("data/c1_training_one_percent.rds") %>% janitor::clean_names()
+```
+
+```{r}
+car_train_1p %>% 
+  glimpse()
+```
+
+Let's run the models
+
+```{r}
+cars_lm_bt <- train(log(mpg) ~ .,
+                    method = "lm",
+                    data = car_train_1p,
+                    trControl = trainControl(method = "boot"))
+```
+
+```{r}
+cars_lm_bt
 ```
 
 
+```{r}
+cars_rf_bt <- train(log(mpg) ~ .,
+                    method = "rf",
+                    data = car_train_1p,
+                    trControl = trainControl(method = "boot"))
+```
 
-
-
-
+```{r}
+cars_rf_bt
+```
 
 
 
