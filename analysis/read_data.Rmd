@@ -1,0 +1,22 @@
+---
+title: "read_data"
+author: "ogorodriguez"
+date: "2020-03-28"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+This file is used to read in external data and save into the data folder
+
+```{r}
+# Reading the data for module 1.  The car data
+url <- "https://raw.githubusercontent.com/juliasilge/supervised-ML-case-studies-course/master/data/cars2018.csv"
+cars2018 <- readr::read_csv(url)
+readr::write_csv(cars2018, "data/cars2018.csv")
+
+
+```
+

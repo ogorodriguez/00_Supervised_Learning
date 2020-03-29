@@ -1,0 +1,264 @@
+---
+title: "Predicting Fuel Efficiency: US motor vehicles"
+author: "ogorodriguez"
+date: "2020-03-28"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE,
+  collapse = TRUE,
+  comment = "#>")
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(tidymodels))
+theme_set(theme_light())
+
+```
+
+
+```{r, include = TRUE}
+# Downloading packages needed
+library(pacman)
+p_load(tidyverse, tidymodels, caret)
+```
+
+
+## Introduction
+
+In this module we will build a model that will help us predict the fuel efficiency of set of cars from the US.
+
+## The data set
+
+The Data set to use will come from the [US Department of Energy](https://www.fueleconomy.gov/feg/download.shtml)
+
+```{r}
+# Show a glimpse of the data
+cars2018 <- read_csv("data/cars2018.csv")
+```
+
+```{r}
+cars2018 %>% 
+  glimpse()
+```
+
+```{r}
+cars2018 %>% 
+  head()
+
+```
+
+Some of the column names have backsticks.  This is the way R handles variable names with spaces.  Let's organize that by using the janitor packages that is used to clean the names of columns by normalizing them into lower case and using under scores.
+
+```{r}
+cars2018 <- cars2018 %>% 
+  janitor::clean_names()
+
+cars2018 %>% 
+  glimpse()
+```
+
+### Buildinig a simple model  
+
+The model to build will help predict the fuel efficiency of a car based on a number of parameters.  The fuel efficiency is given by the varialbe `mpg` in the previous set `cars2018`.  It refers to the number of miles a car can travel on a sigle gallon of gas.
+
+`mpg` is a numeric variable.  This means that the model we will need will require a regression analysis since we need to predict a number.
+
+#### EDA
+
+Let's explore more the data that we have in our hands.  The variable we need to predict `mpg` is our set.  One good thing to do is to see how distributed is it.  We can see this visually using the ggplot graph function.
+
+```{r}
+cars2018 %>% 
+  ggplot(aes(x = mpg)) + 
+    geom_histogram(bins = 25) +
+    labs(title = "Fuel Efficiency Distribution",
+         x = "Fuel efficienty (mpg)",
+         y = "Number of cars") +
+    theme_light()
+```
+
+
+#### Using lm() to build a simple model
+
+It helps to build the simplest model possible before going on to doing sophisticated ones.  This will give us an idea of what may be going on with the data.
+
+There is a linear model function in base R that can help us find some underlying relationships.
+
+Two variables are not needed in our set since they are only unique identifiers  Model and Model Year so we will remove them from our site.  
+
+```{r}
+cars_vars <- cars2018 %>% 
+  select(-starts_with("model"))
+
+cars_vars %>% 
+  glimpse()
+
+```
+
+Now let us run the linear model and see the relationships therein.
+
+```{r}
+fit_all <- lm(mpg ~ ., data = cars_vars)
+
+summary(fit_all)
+```
+
+Let us see the results in a tidier manner using the `broom` package.
+
+```{r}
+broom::tidy(fit_all)
+```
+
+```{r}
+# Let's see the measures in detail
+# Use tidyr::pivot_longer() to get the results in column form.
+broom::glance(fit_all) %>% 
+  tidyr::pivot_longer(everything(), names_to = "measures", values_to = "values")
+```
+
+Interpreting the results from this model quickly, we can see this model may do a good job predicting the fuel efficiency from the variables indicated in this dataset.  Some key points for this argument are:
+
+ - The p-values is very close to zero (way less than 5%) which makes the model significant and less prone to chance.
+ - Both the multiple and adjusted r_squared are close to 1 (~ 0.7), also an indication of the significance of the model using this variables.
+ - The F-statistics is 192, considerably larger than 1 given that we have a set with 1144 observation points.  Also another indication to reject the null hypothesis that there may not be relationship among the variables that can help us predict the Fuel efficiency with this set.
+ 
+We have not yet tested the model and its quality in a real set of values.  That is why in the next section we will use training and testing subsets of the data to train our model
+
+### The caret package
+
+`caret` is a package used for working with machine learning trainig models.  We will be using it together with other packages included in the tidymodels suite.  
+
+It is advisable to hold some of our data for testing purposes and use the rest to train our model.  Then we can compare how the model performs on fresh data.  This will give us more insights into the use of the model to propose.  Linear model it is said may not be the most accurate nor sophisticated but in this case it will help internalize the concepts.
+
+#### Creating the training and testing sets
+
+The package `rsample` contains a function that will help us split the data into a proportion for training and another for testing.
+
+```{r}
+car_split <- cars2018 %>% 
+  rsample::initial_split(prop = 0.8,
+                         strata = "aspiration")
+```
+
+The split within the set will be done at 80%, which means that the training set will be comprised of 80% of the data and the testing set of 20%.  The split was done so that the data will be balanced according to the aspiration variable.  Meaning, so that the both splits have a balanced inclusion of both types in them.
+
+If we look at the object `car_split` we can see it is a special class.  and also its output is just sequence of numbers.  
+
+```{r}
+car_split %>% 
+  class()
+```
+
+```{r}
+car_split
+```
+
+This sequence of numbers indicate the amount of points used for training (916), followed by the amount used for testing (228) and then the total number of observations in our dataset (1144).
+
+We can see this in a tidy way buy pulling out the tidy() function from broom and then using count from dplyr.  The systmes labels Analysis the observation used for training and Assessment those used for testing.
+
+```{r}
+broom::tidy(car_split) %>% 
+  dplyr::count(Data, sort = TRUE)
+```
+
+Let's access both these sets using variables for training and testing.
+
+```{r}
+car_training <- rsample::training(car_split)
+car_testing <- rsample::testing(car_split)
+
+```
+
+The basic workflow here is:
+- Build the model with the testing data
+- Validate the model with validation data
+- Evaluate the model with testing data
+
+In the previous section the notion of validation was introduced.  Validation is needed when we are trying to assess several models and then choose the best one, or the most significant one, to evaluate.  For this section it is not be necessary.
+
+#### Building the model using lm from caret
+
+`caret` has an engine that lets us plug in the model we would like to use our training data on.  It contains various models, including the linear model one, or lm.  
+
+```{r}
+fit_lm <- caret::train(log(mpg) ~ .,
+                       method = "lm",
+                       data = car_training,
+                       trContro = trainControl(method = "none") )
+```
+
+Let's check the class of the fit_lm model.
+
+```{r}
+fit_lm %>% 
+  class()
+```
+
+Let's inspect the model.
+
+```{r}
+fit_lm 
+```
+
+At first we can see that from the 916 observations of our training sample it identified 14 predictors.  In comparison the lm() from base R identified 13.  In this case the r_squared is less then in base R (0.6 compared to 0.7 in base R.)
+
+The evaluation can be done also using the yardstick package.
+
+#### Evaluation the model with yardstick
+
+I will practice again with a new dataset imported for this course.
+
+```{r}
+cars_vars2 <- readr::read_rds("data/c1_cars_vars_full.rds") %>% janitor::clean_names()
+cars_vars2 %>% glimpse()
+```
+
+```{r}
+car_split2 <- cars_vars2 %>% 
+  rsample::initial_split(prop = 0.8,
+                         strata = "aspiration")
+
+car_train <- rsample::training(car_split2)
+car_test <- rsample::testing(car_split2)
+```
+
+Let us fit the model
+
+```{r}
+fit_lm2 <- caret::train(log(mpg) ~ .,
+                        method = "lm",
+                        data = car_train,
+                        trControl = trainControl(method = "none"))
+```
+
+
+```{r}
+fit_lm2
+```
+
+Now let's train a RandomForest model
+
+```{r}
+fit_rf <- caret::train(log(mpg) ~ .,
+                        method = "rf",
+                        data = car_train,
+                        trControl = trainControl(method = "none"))
+```
+
+```{r}
+fit_rf %>% class()
+```
+
+```{r}
+fit_rf
+```
+
+
+
+
+
