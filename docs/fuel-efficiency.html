@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="ogorodriguez" />
+
+<meta name="date" content="2020-03-28" />
+
+<title>Predicting Fuel Efficiency: US motor vehicles</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/simplex.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Supervised Learning in R Case Studies</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Predicting Fuel Efficiency: US motor vehicles</h1>
+<h4 class="author">ogorodriguez</h4>
+<h4 class="date">2020-03-28</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-03-29
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>00_Supervised_Learning/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.1). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200328code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200328)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200328code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200328)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong8246a7c"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 8246a7c </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrong8246a7c" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version 8246a7c. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  data/c1_cars_vars_full.rds
+    Untracked:  data/cars2018.csv
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/fuel-efficiency.Rmd</code>) and HTML (<code>docs/fuel-efficiency.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+8246a7c
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2020-03-29
+</td>
+<td>
+First publishing of all files
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code># Downloading packages needed
+library(pacman)
+p_load(tidyverse, tidymodels, caret)</code></pre>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this module we will build a model that will help us predict the fuel efficiency of set of cars from the US.</p>
+</div>
+<div id="the-data-set" class="section level2">
+<h2>The data set</h2>
+<p>The Data set to use will come from the <a href="https://www.fueleconomy.gov/feg/download.shtml">US Department of Energy</a></p>
+<pre class="r"><code># Show a glimpse of the data
+cars2018 &lt;- read_csv(&quot;data/cars2018.csv&quot;)</code></pre>
+<pre class="r"><code>cars2018 %&gt;% 
+  glimpse()
+#&gt; Observations: 1,144
+#&gt; Variables: 15
+#&gt; $ Model                     &lt;chr&gt; &quot;Acura NSX&quot;, &quot;ALFA ROMEO 4C&quot;, &quot;Audi R8 AW...
+#&gt; $ `Model Index`             &lt;dbl&gt; 57, 410, 65, 71, 66, 72, 46, 488, 38, 278...
+#&gt; $ Displacement              &lt;dbl&gt; 3.5, 1.8, 5.2, 5.2, 5.2, 5.2, 2.0, 3.0, 8...
+#&gt; $ Cylinders                 &lt;dbl&gt; 6, 4, 10, 10, 10, 10, 4, 6, 16, 8, 8, 8, ...
+#&gt; $ Gears                     &lt;dbl&gt; 9, 6, 7, 7, 7, 7, 6, 7, 7, 8, 8, 7, 7, 7,...
+#&gt; $ Transmission              &lt;chr&gt; &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;...
+#&gt; $ MPG                       &lt;dbl&gt; 21, 28, 17, 18, 17, 18, 26, 20, 11, 18, 1...
+#&gt; $ Aspiration                &lt;chr&gt; &quot;Turbocharged/Supercharged&quot;, &quot;Turbocharge...
+#&gt; $ `Lockup Torque Converter` &lt;chr&gt; &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;N&quot;, &quot;...
+#&gt; $ Drive                     &lt;chr&gt; &quot;All Wheel Drive&quot;, &quot;2-Wheel Drive, Rear&quot;,...
+#&gt; $ `Max Ethanol`             &lt;dbl&gt; 10, 10, 15, 15, 15, 15, 15, 10, 15, 10, 1...
+#&gt; $ `Recommended Fuel`        &lt;chr&gt; &quot;Premium Unleaded Required&quot;, &quot;Premium Unl...
+#&gt; $ `Intake Valves Per Cyl`   &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2,...
+#&gt; $ `Exhaust Valves Per Cyl`  &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2,...
+#&gt; $ `Fuel injection`          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Di...</code></pre>
+<pre class="r"><code>cars2018 %&gt;% 
+  head()
+#&gt; # A tibble: 6 x 15
+#&gt;   Model `Model Index` Displacement Cylinders Gears Transmission   MPG Aspiration
+#&gt;   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;     
+#&gt; 1 Acur~            57          3.5         6     9 Manual          21 Turbochar~
+#&gt; 2 ALFA~           410          1.8         4     6 Manual          28 Turbochar~
+#&gt; 3 Audi~            65          5.2        10     7 Manual          17 Naturally~
+#&gt; 4 Audi~            71          5.2        10     7 Manual          18 Naturally~
+#&gt; 5 Audi~            66          5.2        10     7 Manual          17 Naturally~
+#&gt; 6 Audi~            72          5.2        10     7 Manual          18 Naturally~
+#&gt; # ... with 7 more variables: `Lockup Torque Converter` &lt;chr&gt;, Drive &lt;chr&gt;, `Max
+#&gt; #   Ethanol` &lt;dbl&gt;, `Recommended Fuel` &lt;chr&gt;, `Intake Valves Per Cyl` &lt;dbl&gt;,
+#&gt; #   `Exhaust Valves Per Cyl` &lt;dbl&gt;, `Fuel injection` &lt;chr&gt;</code></pre>
+<p>Some of the column names have backsticks. This is the way R handles variable names with spaces. Let’s organize that by using the janitor packages that is used to clean the names of columns by normalizing them into lower case and using under scores.</p>
+<pre class="r"><code>cars2018 &lt;- cars2018 %&gt;% 
+  janitor::clean_names()
+
+cars2018 %&gt;% 
+  glimpse()
+#&gt; Observations: 1,144
+#&gt; Variables: 15
+#&gt; $ model                   &lt;chr&gt; &quot;Acura NSX&quot;, &quot;ALFA ROMEO 4C&quot;, &quot;Audi R8 AWD&quot;...
+#&gt; $ model_index             &lt;dbl&gt; 57, 410, 65, 71, 66, 72, 46, 488, 38, 278, ...
+#&gt; $ displacement            &lt;dbl&gt; 3.5, 1.8, 5.2, 5.2, 5.2, 5.2, 2.0, 3.0, 8.0...
+#&gt; $ cylinders               &lt;dbl&gt; 6, 4, 10, 10, 10, 10, 4, 6, 16, 8, 8, 8, 8,...
+#&gt; $ gears                   &lt;dbl&gt; 9, 6, 7, 7, 7, 7, 6, 7, 7, 8, 8, 7, 7, 7, 7...
+#&gt; $ transmission            &lt;chr&gt; &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;Ma...
+#&gt; $ mpg                     &lt;dbl&gt; 21, 28, 17, 18, 17, 18, 26, 20, 11, 18, 16,...
+#&gt; $ aspiration              &lt;chr&gt; &quot;Turbocharged/Supercharged&quot;, &quot;Turbocharged/...
+#&gt; $ lockup_torque_converter &lt;chr&gt; &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;N&quot;, &quot;Y&quot;...
+#&gt; $ drive                   &lt;chr&gt; &quot;All Wheel Drive&quot;, &quot;2-Wheel Drive, Rear&quot;, &quot;...
+#&gt; $ max_ethanol             &lt;dbl&gt; 10, 10, 15, 15, 15, 15, 15, 10, 15, 10, 10,...
+#&gt; $ recommended_fuel        &lt;chr&gt; &quot;Premium Unleaded Required&quot;, &quot;Premium Unlea...
+#&gt; $ intake_valves_per_cyl   &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2...
+#&gt; $ exhaust_valves_per_cyl  &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2...
+#&gt; $ fuel_injection          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Dire...</code></pre>
+<div id="buildinig-a-simple-model" class="section level3">
+<h3>Buildinig a simple model</h3>
+<p>The model to build will help predict the fuel efficiency of a car based on a number of parameters. The fuel efficiency is given by the varialbe <code>mpg</code> in the previous set <code>cars2018</code>. It refers to the number of miles a car can travel on a sigle gallon of gas.</p>
+<p><code>mpg</code> is a numeric variable. This means that the model we will need will require a regression analysis since we need to predict a number.</p>
+<div id="eda" class="section level4">
+<h4>EDA</h4>
+<p>Let’s explore more the data that we have in our hands. The variable we need to predict <code>mpg</code> is our set. One good thing to do is to see how distributed is it. We can see this visually using the ggplot graph function.</p>
+<pre class="r"><code>cars2018 %&gt;% 
+  ggplot(aes(x = mpg)) + 
+    geom_histogram(bins = 25) +
+    labs(title = &quot;Fuel Efficiency Distribution&quot;,
+         x = &quot;Fuel efficienty (mpg)&quot;,
+         y = &quot;Number of cars&quot;) +
+    theme_light()</code></pre>
+<p><img src="figure/fuel-efficiency.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="using-lm-to-build-a-simple-model" class="section level4">
+<h4>Using lm() to build a simple model</h4>
+<p>It helps to build the simplest model possible before going on to doing sophisticated ones. This will give us an idea of what may be going on with the data.</p>
+<p>There is a linear model function in base R that can help us find some underlying relationships.</p>
+<p>Two variables are not needed in our set since they are only unique identifiers Model and Model Year so we will remove them from our site.</p>
+<pre class="r"><code>cars_vars &lt;- cars2018 %&gt;% 
+  select(-starts_with(&quot;model&quot;))
+
+cars_vars %&gt;% 
+  glimpse()
+#&gt; Observations: 1,144
+#&gt; Variables: 13
+#&gt; $ displacement            &lt;dbl&gt; 3.5, 1.8, 5.2, 5.2, 5.2, 5.2, 2.0, 3.0, 8.0...
+#&gt; $ cylinders               &lt;dbl&gt; 6, 4, 10, 10, 10, 10, 4, 6, 16, 8, 8, 8, 8,...
+#&gt; $ gears                   &lt;dbl&gt; 9, 6, 7, 7, 7, 7, 6, 7, 7, 8, 8, 7, 7, 7, 7...
+#&gt; $ transmission            &lt;chr&gt; &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;Ma...
+#&gt; $ mpg                     &lt;dbl&gt; 21, 28, 17, 18, 17, 18, 26, 20, 11, 18, 16,...
+#&gt; $ aspiration              &lt;chr&gt; &quot;Turbocharged/Supercharged&quot;, &quot;Turbocharged/...
+#&gt; $ lockup_torque_converter &lt;chr&gt; &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;N&quot;, &quot;Y&quot;...
+#&gt; $ drive                   &lt;chr&gt; &quot;All Wheel Drive&quot;, &quot;2-Wheel Drive, Rear&quot;, &quot;...
+#&gt; $ max_ethanol             &lt;dbl&gt; 10, 10, 15, 15, 15, 15, 15, 10, 15, 10, 10,...
+#&gt; $ recommended_fuel        &lt;chr&gt; &quot;Premium Unleaded Required&quot;, &quot;Premium Unlea...
+#&gt; $ intake_valves_per_cyl   &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2...
+#&gt; $ exhaust_valves_per_cyl  &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2...
+#&gt; $ fuel_injection          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Dire...</code></pre>
+<p>Now let us run the linear model and see the relationships therein.</p>
+<pre class="r"><code>fit_all &lt;- lm(mpg ~ ., data = cars_vars)
+
+summary(fit_all)
+#&gt; 
+#&gt; Call:
+#&gt; lm(formula = mpg ~ ., data = cars_vars)
+#&gt; 
+#&gt; Residuals:
+#&gt;     Min      1Q  Median      3Q     Max 
+#&gt; -8.5261 -1.6473 -0.1096  1.3572 26.5045 
+#&gt; 
+#&gt; Coefficients:
+#&gt;                                               Estimate Std. Error t value
+#&gt; (Intercept)                                  44.539519   1.176283  37.865
+#&gt; displacement                                 -3.786147   0.264845 -14.296
+#&gt; cylinders                                     0.520284   0.161802   3.216
+#&gt; gears                                         0.157674   0.069984   2.253
+#&gt; transmissionCVT                               4.877637   0.404051  12.072
+#&gt; transmissionManual                           -1.074608   0.366075  -2.935
+#&gt; aspirationTurbocharged/Supercharged          -2.190248   0.267559  -8.186
+#&gt; lockup_torque_converterY                     -2.624494   0.381252  -6.884
+#&gt; drive2-Wheel Drive, Rear                     -2.676716   0.291044  -9.197
+#&gt; drive4-Wheel Drive                           -3.397532   0.335147 -10.137
+#&gt; driveAll Wheel Drive                         -2.941084   0.257174 -11.436
+#&gt; max_ethanol                                  -0.007377   0.005898  -1.251
+#&gt; recommended_fuelPremium Unleaded Required    -0.403935   0.262413  -1.539
+#&gt; recommended_fuelRegular Unleaded Recommended -0.996343   0.272495  -3.656
+#&gt; intake_valves_per_cyl                        -1.446107   1.620575  -0.892
+#&gt; exhaust_valves_per_cyl                       -2.469747   1.547748  -1.596
+#&gt; fuel_injectionMultipoint/sequential ignition -0.658428   0.243819  -2.700
+#&gt;                                              Pr(&gt;|t|)    
+#&gt; (Intercept)                                   &lt; 2e-16 ***
+#&gt; displacement                                  &lt; 2e-16 ***
+#&gt; cylinders                                    0.001339 ** 
+#&gt; gears                                        0.024450 *  
+#&gt; transmissionCVT                               &lt; 2e-16 ***
+#&gt; transmissionManual                           0.003398 ** 
+#&gt; aspirationTurbocharged/Supercharged          7.24e-16 ***
+#&gt; lockup_torque_converterY                     9.65e-12 ***
+#&gt; drive2-Wheel Drive, Rear                      &lt; 2e-16 ***
+#&gt; drive4-Wheel Drive                            &lt; 2e-16 ***
+#&gt; driveAll Wheel Drive                          &lt; 2e-16 ***
+#&gt; max_ethanol                                  0.211265    
+#&gt; recommended_fuelPremium Unleaded Required    0.124010    
+#&gt; recommended_fuelRegular Unleaded Recommended 0.000268 ***
+#&gt; intake_valves_per_cyl                        0.372400    
+#&gt; exhaust_valves_per_cyl                       0.110835    
+#&gt; fuel_injectionMultipoint/sequential ignition 0.007028 ** 
+#&gt; ---
+#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; 
+#&gt; Residual standard error: 2.916 on 1127 degrees of freedom
+#&gt; Multiple R-squared:  0.7314, Adjusted R-squared:  0.7276 
+#&gt; F-statistic: 191.8 on 16 and 1127 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Let us see the results in a tidier manner using the <code>broom</code> package.</p>
+<pre class="r"><code>broom::tidy(fit_all)
+#&gt; # A tibble: 17 x 5
+#&gt;    term                                   estimate std.error statistic   p.value
+#&gt;    &lt;chr&gt;                                     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt;  1 (Intercept)                            44.5       1.18       37.9   4.44e-203
+#&gt;  2 displacement                           -3.79      0.265     -14.3   9.95e- 43
+#&gt;  3 cylinders                               0.520     0.162       3.22  1.34e-  3
+#&gt;  4 gears                                   0.158     0.0700      2.25  2.44e-  2
+#&gt;  5 transmissionCVT                         4.88      0.404      12.1   1.21e- 31
+#&gt;  6 transmissionManual                     -1.07      0.366      -2.94  3.40e-  3
+#&gt;  7 aspirationTurbocharged/Supercharged    -2.19      0.268      -8.19  7.24e- 16
+#&gt;  8 lockup_torque_converterY               -2.62      0.381      -6.88  9.65e- 12
+#&gt;  9 drive2-Wheel Drive, Rear               -2.68      0.291      -9.20  1.73e- 19
+#&gt; 10 drive4-Wheel Drive                     -3.40      0.335     -10.1   3.59e- 23
+#&gt; 11 driveAll Wheel Drive                   -2.94      0.257     -11.4   9.89e- 29
+#&gt; 12 max_ethanol                            -0.00738   0.00590    -1.25  2.11e-  1
+#&gt; 13 recommended_fuelPremium Unleaded Requ~ -0.404     0.262      -1.54  1.24e-  1
+#&gt; 14 recommended_fuelRegular Unleaded Reco~ -0.996     0.272      -3.66  2.68e-  4
+#&gt; 15 intake_valves_per_cyl                  -1.45      1.62       -0.892 3.72e-  1
+#&gt; 16 exhaust_valves_per_cyl                 -2.47      1.55       -1.60  1.11e-  1
+#&gt; 17 fuel_injectionMultipoint/sequential i~ -0.658     0.244      -2.70  7.03e-  3</code></pre>
+<pre class="r"><code># Let&#39;s see the measures in detail
+# Use tidyr::pivot_longer() to get the results in column form.
+broom::glance(fit_all) %&gt;% 
+  tidyr::pivot_longer(everything(), names_to = &quot;measures&quot;, values_to = &quot;values&quot;)
+#&gt; # A tibble: 11 x 2
+#&gt;    measures          values
+#&gt;    &lt;chr&gt;              &lt;dbl&gt;
+#&gt;  1 r.squared      7.31e-  1
+#&gt;  2 adj.r.squared  7.28e-  1
+#&gt;  3 sigma          2.92e+  0
+#&gt;  4 statistic      1.92e+  2
+#&gt;  5 p.value        8.58e-308
+#&gt;  6 df             1.70e+  1
+#&gt;  7 logLik        -2.84e+  3
+#&gt;  8 AIC            5.71e+  3
+#&gt;  9 BIC            5.80e+  3
+#&gt; 10 deviance       9.58e+  3
+#&gt; 11 df.residual    1.13e+  3</code></pre>
+<p>Interpreting the results from this model quickly, we can see this model may do a good job predicting the fuel efficiency from the variables indicated in this dataset. Some key points for this argument are:</p>
+<ul>
+<li>The p-values is very close to zero (way less than 5%) which makes the model significant and less prone to chance.</li>
+<li>Both the multiple and adjusted r_squared are close to 1 (~ 0.7), also an indication of the significance of the model using this variables.</li>
+<li>The F-statistics is 192, considerably larger than 1 given that we have a set with 1144 observation points. Also another indication to reject the null hypothesis that there may not be relationship among the variables that can help us predict the Fuel efficiency with this set.</li>
+</ul>
+<p>We have not yet tested the model and its quality in a real set of values. That is why in the next section we will use training and testing subsets of the data to train our model</p>
+</div>
+</div>
+<div id="the-caret-package" class="section level3">
+<h3>The caret package</h3>
+<p><code>caret</code> is a package used for working with machine learning trainig models. We will be using it together with other packages included in the tidymodels suite.</p>
+<p>It is advisable to hold some of our data for testing purposes and use the rest to train our model. Then we can compare how the model performs on fresh data. This will give us more insights into the use of the model to propose. Linear model it is said may not be the most accurate nor sophisticated but in this case it will help internalize the concepts.</p>
+<div id="creating-the-training-and-testing-sets" class="section level4">
+<h4>Creating the training and testing sets</h4>
+<p>The package <code>rsample</code> contains a function that will help us split the data into a proportion for training and another for testing.</p>
+<pre class="r"><code>car_split &lt;- cars2018 %&gt;% 
+  rsample::initial_split(prop = 0.8,
+                         strata = &quot;aspiration&quot;)</code></pre>
+<p>The split within the set will be done at 80%, which means that the training set will be comprised of 80% of the data and the testing set of 20%. The split was done so that the data will be balanced according to the aspiration variable. Meaning, so that the both splits have a balanced inclusion of both types in them.</p>
+<p>If we look at the object <code>car_split</code> we can see it is a special class. and also its output is just sequence of numbers.</p>
+<pre class="r"><code>car_split %&gt;% 
+  class()
+#&gt; [1] &quot;rsplit&quot;   &quot;mc_split&quot;</code></pre>
+<pre class="r"><code>car_split
+#&gt; &lt;916/228/1144&gt;</code></pre>
+<p>This sequence of numbers indicate the amount of points used for training (916), followed by the amount used for testing (228) and then the total number of observations in our dataset (1144).</p>
+<p>We can see this in a tidy way buy pulling out the tidy() function from broom and then using count from dplyr. The systmes labels Analysis the observation used for training and Assessment those used for testing.</p>
+<pre class="r"><code>broom::tidy(car_split) %&gt;% 
+  dplyr::count(Data, sort = TRUE)
+#&gt; # A tibble: 2 x 2
+#&gt;   Data           n
+#&gt;   &lt;chr&gt;      &lt;int&gt;
+#&gt; 1 Analysis     916
+#&gt; 2 Assessment   228</code></pre>
+<p>Let’s access both these sets using variables for training and testing.</p>
+<pre class="r"><code>car_training &lt;- rsample::training(car_split)
+car_testing &lt;- rsample::testing(car_split)</code></pre>
+<p>The basic workflow here is: - Build the model with the testing data - Validate the model with validation data - Evaluate the model with testing data</p>
+<p>In the previous section the notion of validation was introduced. Validation is needed when we are trying to assess several models and then choose the best one, or the most significant one, to evaluate. For this section it is not be necessary.</p>
+</div>
+<div id="building-the-model-using-lm-from-caret" class="section level4">
+<h4>Building the model using lm from caret</h4>
+<p><code>caret</code> has an engine that lets us plug in the model we would like to use our training data on. It contains various models, including the linear model one, or lm.</p>
+<pre class="r"><code>fit_lm &lt;- caret::train(log(mpg) ~ .,
+                       method = &quot;lm&quot;,
+                       data = car_training,
+                       trContro = trainControl(method = &quot;none&quot;) )</code></pre>
+<p>Let’s check the class of the fit_lm model.</p>
+<pre class="r"><code>fit_lm %&gt;% 
+  class()
+#&gt; [1] &quot;train&quot;         &quot;train.formula&quot;</code></pre>
+<p>Let’s inspect the model.</p>
+<pre class="r"><code>fit_lm 
+#&gt; Linear Regression 
+#&gt; 
+#&gt; 916 samples
+#&gt;  14 predictor
+#&gt; 
+#&gt; No pre-processing
+#&gt; Resampling: Bootstrapped (25 reps) 
+#&gt; Summary of sample sizes: 916, 916, 916, 916, 916, 916, ... 
+#&gt; Resampling results:
+#&gt; 
+#&gt;   RMSE       Rsquared   MAE     
+#&gt;   0.1606464  0.6040351  0.113699
+#&gt; 
+#&gt; Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
+<p>At first we can see that from the 916 observations of our training sample it identified 14 predictors. In comparison the lm() from base R identified 13. In this case the r_squared is less then in base R (0.6 compared to 0.7 in base R.)</p>
+<p>The evaluation can be done also using the yardstick package.</p>
+</div>
+<div id="evaluation-the-model-with-yardstick" class="section level4">
+<h4>Evaluation the model with yardstick</h4>
+<p>I will practice again with a new dataset imported for this course.</p>
+<pre class="r"><code>cars_vars2 &lt;- readr::read_rds(&quot;data/c1_cars_vars_full.rds&quot;) %&gt;% janitor::clean_names()
+cars_vars2 %&gt;% glimpse()
+#&gt; Observations: 1,144
+#&gt; Variables: 13
+#&gt; $ displacement            &lt;dbl&gt; 3.5, 1.8, 5.2, 5.2, 5.2, 5.2, 2.0, 3.0, 8.0...
+#&gt; $ cylinders               &lt;int&gt; 6, 4, 10, 10, 10, 10, 4, 6, 16, 8, 8, 8, 8,...
+#&gt; $ gears                   &lt;int&gt; 9, 6, 7, 7, 7, 7, 6, 7, 7, 8, 8, 7, 7, 7, 7...
+#&gt; $ transmission            &lt;chr&gt; &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;Manual&quot;, &quot;Ma...
+#&gt; $ mpg                     &lt;int&gt; 21, 28, 17, 18, 17, 18, 26, 20, 11, 18, 16,...
+#&gt; $ aspiration              &lt;chr&gt; &quot;Turbocharged/Supercharged&quot;, &quot;Turbocharged/...
+#&gt; $ lockup_torque_converter &lt;chr&gt; &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;N&quot;, &quot;Y&quot;...
+#&gt; $ drive                   &lt;chr&gt; &quot;All Wheel Drive&quot;, &quot;2-Wheel Drive, Rear&quot;, &quot;...
+#&gt; $ max_ethanol             &lt;int&gt; 10, 10, 15, 15, 15, 15, 15, 10, 15, 10, 10,...
+#&gt; $ recommended_fuel        &lt;chr&gt; &quot;Premium Unleaded Required&quot;, &quot;Premium Unlea...
+#&gt; $ intake_valves_per_cyl   &lt;int&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2...
+#&gt; $ exhaust_valves_per_cyl  &lt;int&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2...
+#&gt; $ fuel_injection          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Dire...</code></pre>
+<pre class="r"><code>car_split2 &lt;- cars_vars2 %&gt;% 
+  rsample::initial_split(prop = 0.8,
+                         strata = &quot;aspiration&quot;)
+
+car_train &lt;- rsample::training(car_split2)
+car_test &lt;- rsample::testing(car_split2)</code></pre>
+<p>Let us fit the model</p>
+<pre class="r"><code>fit_lm2 &lt;- caret::train(log(mpg) ~ .,
+                        method = &quot;lm&quot;,
+                        data = car_train,
+                        trControl = trainControl(method = &quot;none&quot;))</code></pre>
+<pre class="r"><code>fit_lm2
+#&gt; Linear Regression 
+#&gt; 
+#&gt; 916 samples
+#&gt;  12 predictor
+#&gt; 
+#&gt; No pre-processing
+#&gt; Resampling: None</code></pre>
+<p>Now let’s train a RandomForest model</p>
+<pre class="r"><code>fit_rf &lt;- caret::train(log(mpg) ~ .,
+                        method = &quot;rf&quot;,
+                        data = car_train,
+                        trControl = trainControl(method = &quot;none&quot;))</code></pre>
+<pre class="r"><code>fit_rf %&gt;% class()
+#&gt; [1] &quot;train&quot;         &quot;train.formula&quot;</code></pre>
+<pre class="r"><code>fit_rf
+#&gt; Random Forest 
+#&gt; 
+#&gt; 916 samples
+#&gt;  12 predictor
+#&gt; 
+#&gt; No pre-processing
+#&gt; Resampling: None</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()
+#&gt; R version 3.6.1 (2019-07-05)
+#&gt; Platform: x86_64-w64-mingw32/x64 (64-bit)
+#&gt; Running under: Windows 10 x64 (build 18362)
+#&gt; 
+#&gt; Matrix products: default
+#&gt; 
+#&gt; locale:
+#&gt; [1] LC_COLLATE=Spanish_Spain.1252  LC_CTYPE=Spanish_Spain.1252   
+#&gt; [3] LC_MONETARY=Spanish_Spain.1252 LC_NUMERIC=C                  
+#&gt; [5] LC_TIME=Spanish_Spain.1252    
+#&gt; 
+#&gt; attached base packages:
+#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     
+#&gt; 
+#&gt; other attached packages:
+#&gt;  [1] caret_6.0-86     lattice_0.20-40  pacman_0.5.1     yardstick_0.0.5 
+#&gt;  [5] workflows_0.1.0  tune_0.0.1       rsample_0.0.5    recipes_0.1.10  
+#&gt;  [9] parsnip_0.0.5    infer_0.5.1      dials_0.0.4      scales_1.1.0    
+#&gt; [13] broom_0.5.4      tidymodels_0.1.0 forcats_0.4.0    stringr_1.4.0   
+#&gt; [17] dplyr_0.8.4      purrr_0.3.3      readr_1.3.1      tidyr_1.0.2     
+#&gt; [21] tibble_2.1.3     tidyverse_1.3.0  ggplot2_3.2.1    workflowr_1.6.1 
+#&gt; 
+#&gt; loaded via a namespace (and not attached):
+#&gt;   [1] readxl_1.3.1         backports_1.1.5      tidytext_0.2.2      
+#&gt;   [4] plyr_1.8.5           igraph_1.2.4.2       lazyeval_0.2.2      
+#&gt;   [7] splines_3.6.1        crosstalk_1.0.0      listenv_0.8.0       
+#&gt;  [10] SnowballC_0.6.0      rstantools_2.0.0     inline_0.3.15       
+#&gt;  [13] digest_0.6.24        foreach_1.4.8        htmltools_0.4.0     
+#&gt;  [16] rsconnect_0.8.16     fansi_0.4.0          magrittr_1.5        
+#&gt;  [19] globals_0.12.5       modelr_0.1.5         gower_0.2.1         
+#&gt;  [22] matrixStats_0.55.0   xts_0.12-0           prettyunits_1.1.1   
+#&gt;  [25] colorspace_1.4-1     rvest_0.3.5          haven_2.2.0         
+#&gt;  [28] xfun_0.12            callr_3.4.2          crayon_1.3.4        
+#&gt;  [31] jsonlite_1.6.1       lme4_1.1-21          survival_3.1-8      
+#&gt;  [34] zoo_1.8-7            iterators_1.0.12     glue_1.3.1          
+#&gt;  [37] gtable_0.3.0         ipred_0.9-9          pkgbuild_1.0.6      
+#&gt;  [40] rstan_2.19.3         DBI_1.1.0            miniUI_0.1.1.1      
+#&gt;  [43] Rcpp_1.0.4           xtable_1.8-4         GPfit_1.0-8         
+#&gt;  [46] StanHeaders_2.21.0-1 stats4_3.6.1         lava_1.6.6          
+#&gt;  [49] prodlim_2019.11.13   DT_0.12              htmlwidgets_1.5.1   
+#&gt;  [52] httr_1.4.1           threejs_0.3.3        farver_2.0.3        
+#&gt;  [55] loo_2.2.0            pkgconfig_2.0.3      nnet_7.3-12         
+#&gt;  [58] dbplyr_1.4.2         janitor_1.2.1        utf8_1.1.4          
+#&gt;  [61] labeling_0.3         tidyselect_1.0.0     rlang_0.4.4         
+#&gt;  [64] DiceDesign_1.8-1     reshape2_1.4.3       later_1.0.0         
+#&gt;  [67] munsell_0.5.0        cellranger_1.1.0     tools_3.6.1         
+#&gt;  [70] cli_2.0.1            generics_0.0.2       ggridges_0.5.2      
+#&gt;  [73] evaluate_0.14        fastmap_1.0.1        yaml_2.2.1          
+#&gt;  [76] ModelMetrics_1.2.2.2 processx_3.4.2       knitr_1.28          
+#&gt;  [79] fs_1.3.2             randomForest_4.6-14  future_1.16.0       
+#&gt;  [82] nlme_3.1-144         whisker_0.4          mime_0.9            
+#&gt;  [85] rstanarm_2.19.3      xml2_1.2.2           tokenizers_0.2.1    
+#&gt;  [88] compiler_3.6.1       bayesplot_1.7.1      shinythemes_1.1.2   
+#&gt;  [91] rstudioapi_0.11      reprex_0.3.0         tidyposterior_0.0.2 
+#&gt;  [94] lhs_1.0.1            stringi_1.4.6        ps_1.3.2            
+#&gt;  [97] Matrix_1.2-18        nloptr_1.2.1         markdown_1.1        
+#&gt; [100] shinyjs_1.1          vctrs_0.2.3          pillar_1.4.3        
+#&gt; [103] lifecycle_0.1.0      furrr_0.1.0          data.table_1.12.8   
+#&gt; [106] httpuv_1.5.2         R6_2.4.1             promises_1.1.0      
+#&gt; [109] gridExtra_2.3        janeaustenr_0.1.5    codetools_0.2-16    
+#&gt; [112] boot_1.3-24          colourpicker_1.0     MASS_7.3-51.5       
+#&gt; [115] gtools_3.8.1         assertthat_0.2.1     rprojroot_1.3-2     
+#&gt; [118] withr_2.1.2          shinystan_2.5.0      parallel_3.6.1      
+#&gt; [121] hms_0.5.3            grid_3.6.1           rpart_4.1-15        
+#&gt; [124] timeDate_3043.102    minqa_1.2.4          class_7.3-15        
+#&gt; [127] snakecase_0.11.0     rmarkdown_2.1        git2r_0.26.1        
+#&gt; [130] pROC_1.16.1          tidypredict_0.4.5    shiny_1.4.0         
+#&gt; [133] lubridate_1.7.4      base64enc_0.1-3      dygraphs_1.1.1.6</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
