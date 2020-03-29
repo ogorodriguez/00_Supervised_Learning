@@ -209,6 +209,8 @@ At first we can see that from the 916 observations of our training sample it ide
 
 The evaluation can be done also using the yardstick package.
 
+### The yardstick package
+
 #### Evaluation the model with yardstick
 
 I will practice again with a new dataset imported for this course.
@@ -257,6 +259,77 @@ fit_rf %>% class()
 ```{r}
 fit_rf
 ```
+
+
+#### The evaluation
+
+For the evaluation we will need to create a dataframe with both our train datasets that includes both our models and after that, run the metrics() function from the yardsticks package.
+
+```{r}
+library(yardstick)
+
+# The dataframe will be called results that will include the training set used to create the lm and the rf models
+results_train <- car_train %>% 
+  mutate(mpg_log = log(mpg),
+         lreg = predict(fit_lm2, car_train),
+         rfor = predict(fit_rf, car_train)) %>% 
+  select(mpg, mpg_log, lreg, rfor, everything())
+  
+
+```
+
+Let's see this new dataset
+
+```{r}
+results_train %>% 
+  glimpse()
+```
+
+Now let's evaluate the performance.
+
+```{r}
+yardstick::metrics(results_train, truth = mpg, estimate = lreg)
+```
+
+```{r}
+yardstick::metrics(results_train, truth = mpg, estimate = rfor)
+```
+
+Let's see hot these models do on the testing data.
+
+```{r}
+results_test <- car_test %>% 
+  mutate(mpg_log = log(mpg),
+         lreg = predict(fit_lm2, car_test),
+         rfor = predict(fit_rf, car_test)) %>% 
+  select(mpg, mpg_log, lreg, rfor, everything())
+  
+```
+
+```{r}
+yardstick::metrics(results_test, truth = mpg, estimate = lreg)
+```
+
+```{r}
+yardstick::metrics(results_train, truth = mpg, estimate = rfor)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
