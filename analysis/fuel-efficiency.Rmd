@@ -128,13 +128,13 @@ Interpreting the results from this model quickly, we can see this model may do a
  
 We have not yet tested the model and its quality in a real set of values.  That is why in the next section we will use training and testing subsets of the data to train our model
 
-### The caret package
+## The caret package
 
 `caret` is a package used for working with machine learning trainig models.  We will be using it together with other packages included in the tidymodels suite.  
 
 It is advisable to hold some of our data for testing purposes and use the rest to train our model.  Then we can compare how the model performs on fresh data.  This will give us more insights into the use of the model to propose.  Linear model it is said may not be the most accurate nor sophisticated but in this case it will help internalize the concepts.
 
-#### Creating the training and testing sets
+### Creating the training and testing sets
 
 The package `rsample` contains a function that will help us split the data into a proportion for training and another for testing.
 
@@ -181,7 +181,7 @@ The basic workflow here is:
 
 In the previous section the notion of validation was introduced.  Validation is needed when we are trying to assess several models and then choose the best one, or the most significant one, to evaluate.  For this section it is not be necessary.
 
-#### Building the model using lm from caret
+### Building the model using lm from caret
 
 `caret` has an engine that lets us plug in the model we would like to use our training data on.  It contains various models, including the linear model one, or lm.  
 
@@ -209,9 +209,9 @@ At first we can see that from the 916 observations of our training sample it ide
 
 The evaluation can be done also using the yardstick package.
 
-### The yardstick package
+## The yardstick package
 
-#### Evaluation the model with yardstick
+### Evaluation the model with yardstick
 
 I will practice again with a new dataset imported for this course.
 
@@ -261,7 +261,7 @@ fit_rf
 ```
 
 
-#### The evaluation
+### The evaluation
 
 For the evaluation we will need to create a dataframe with both our train datasets that includes both our models and after that, run the metrics() function from the yardsticks package.
 
