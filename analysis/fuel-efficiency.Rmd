@@ -311,7 +311,7 @@ yardstick::metrics(results_test, truth = mpg_log, estimate = lreg)
 ```
 
 ```{r}
-yardstick::metrics(results_train, truth = mpg_log, estimate = rfor)
+yardstick::metrics(results_test, truth = mpg_log, estimate = rfor)
 ```
 
 ## Bootstrapping
@@ -356,10 +356,31 @@ cars_rf_bt <- train(log(mpg) ~ .,
 cars_rf_bt
 ```
 
+Let's compare the training models with bootstrapping in the dataset
 
+```{r}
+results_train_bt <- car_train_1p %>% 
+  mutate(mpg_log = log(mpg),
+         lreg = predict(cars_lm_bt, car_train_1p),
+         rfor = predict(cars_rf_bt, car_train_1p)) %>% 
+  select(mpg, mpg_log, lreg, rfor, everything())
+```
 
+```{r}
+results_train_bt
+```
 
+Let's check how efficient are the models 
 
+```{r}
+yardstick::metrics(results_train_bt, truth = mpg_log, estimate = lreg)
+```
+
+```{r}
+yardstick::metrics(results_train_bt, truth = mpg_log, estimate = rfor)
+```
+
+Let's test on the testing data
 
 
 
