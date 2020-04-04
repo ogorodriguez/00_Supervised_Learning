@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtree782548b6fba3b9aec18510c2d7f7957017cf8518targetblank782548ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/782548b6fba3b9aec18510c2d7f7957017cf8518" target="_blank">782548b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtreedfc530bfd9bf907f26a7e1f9c23180cd7403f064targetblankdfc530ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/dfc530bfd9bf907f26a7e1f9c23180cd7403f064" target="_blank">dfc530b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtree782548b6fba3b9aec18510c2d7f7957017cf8518targetblank782548ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez00SupervisedLearningtreedfc530bfd9bf907f26a7e1f9c23180cd7403f064targetblankdfc530ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/782548b6fba3b9aec18510c2d7f7957017cf8518" target="_blank">782548b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/ogorodriguez/00_Supervised_Learning/tree/dfc530bfd9bf907f26a7e1f9c23180cd7403f064" target="_blank">dfc530b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -525,8 +525,11 @@ Ignored files:
 
 Untracked files:
     Untracked:  data/c1_cars_vars_full.rds
+    Untracked:  data/c1_testing_full.rds
     Untracked:  data/c1_training_one_percent.rds
     Untracked:  data/cars2018.csv
+    Untracked:  data/cars_lm_bt.rds
+    Untracked:  data/cars_rf_bt.rds
     Untracked:  output/car_test.rds
     Untracked:  output/car_train.rds
     Untracked:  output/cars_lm_bt.rds
@@ -574,6 +577,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ogorodriguez/00_Supervised_Learning/blob/dfc530bfd9bf907f26a7e1f9c23180cd7403f064/analysis/fuel-efficiency.Rmd" target="_blank">dfc530b</a>
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2020-04-04
+</td>
+<td>
+Fixed issue with testing model
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ogorodriguez/00_Supervised_Learning/18308e84d8773b220183dfaa94931820ea5a8ef6/docs/fuel-efficiency.html" target="_blank">18308e8</a>
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2020-04-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1216,11 +1253,11 @@ results_train &lt;- car_train %&gt;%
 #&gt; $ exhaust_valves_per_cyl  &lt;int&gt; 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2...
 #&gt; $ fuel_injection          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Dire...</code></pre>
 <p>Let’s run the models</p>
-<pre class="r"><code>cars_lm_bt &lt;- train(log(mpg) ~ .,
+<pre class="r"><code>cars_1p_lm_bt &lt;- train(log(mpg) ~ .,
                     method = &quot;lm&quot;,
                     data = car_train_1p,
                     trControl = trainControl(method = &quot;boot&quot;))</code></pre>
-<pre class="r"><code>cars_lm_bt
+<pre class="r"><code>cars_1p_lm_bt
 #&gt; Linear Regression 
 #&gt; 
 #&gt; 93 samples
@@ -1235,11 +1272,11 @@ results_train &lt;- car_train %&gt;%
 #&gt;   0.09194264  0.8308545  0.0718651
 #&gt; 
 #&gt; Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
-<pre class="r"><code>cars_rf_bt &lt;- train(log(mpg) ~ .,
+<pre class="r"><code>cars_1p_rf_bt &lt;- train(log(mpg) ~ .,
                     method = &quot;rf&quot;,
                     data = car_train_1p,
                     trControl = trainControl(method = &quot;boot&quot;))</code></pre>
-<pre class="r"><code>cars_rf_bt
+<pre class="r"><code>cars_1p_rf_bt
 #&gt; Random Forest 
 #&gt; 
 #&gt; 93 samples
@@ -1258,12 +1295,12 @@ results_train &lt;- car_train %&gt;%
 #&gt; RMSE was used to select the optimal model using the smallest value.
 #&gt; The final value used for the model was mtry = 9.</code></pre>
 <p>Let’s compare the training models with bootstrapping in the dataset</p>
-<pre class="r"><code>results_train_bt &lt;- car_train_1p %&gt;% 
+<pre class="r"><code>results_train_1p_bt &lt;- car_train_1p %&gt;% 
   mutate(mpg_log = log(mpg),
-         lreg = predict(cars_lm_bt, car_train_1p),
-         rfor = predict(cars_rf_bt, car_train_1p)) %&gt;% 
+         lreg = predict(cars_1p_lm_bt, car_train_1p),
+         rfor = predict(cars_1p_rf_bt, car_train_1p)) %&gt;% 
   select(mpg, mpg_log, lreg, rfor, everything())</code></pre>
-<pre class="r"><code>results_train_bt
+<pre class="r"><code>results_train_1p_bt
 #&gt; # A tibble: 93 x 16
 #&gt;      mpg mpg_log  lreg  rfor displacement cylinders gears transmission
 #&gt;    &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;     &lt;int&gt; &lt;int&gt; &lt;chr&gt;       
@@ -1282,14 +1319,14 @@ results_train &lt;- car_train %&gt;%
 #&gt; #   recommended_fuel &lt;chr&gt;, intake_valves_per_cyl &lt;int&gt;,
 #&gt; #   exhaust_valves_per_cyl &lt;int&gt;, fuel_injection &lt;chr&gt;</code></pre>
 <p>Let’s check how efficient are the models</p>
-<pre class="r"><code>yardstick::metrics(results_train_bt, truth = mpg_log, estimate = lreg)
+<pre class="r"><code>yardstick::metrics(results_train_1p_bt, truth = mpg_log, estimate = lreg)
 #&gt; # A tibble: 3 x 3
 #&gt;   .metric .estimator .estimate
 #&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
 #&gt; 1 rmse    standard      0.0657
 #&gt; 2 rsq     standard      0.910 
 #&gt; 3 mae     standard      0.0518</code></pre>
-<pre class="r"><code>yardstick::metrics(results_train_bt, truth = mpg_log, estimate = rfor)
+<pre class="r"><code>yardstick::metrics(results_train_1p_bt, truth = mpg_log, estimate = rfor)
 #&gt; # A tibble: 3 x 3
 #&gt;   .metric .estimator .estimate
 #&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
@@ -1299,7 +1336,105 @@ results_train &lt;- car_train %&gt;%
 </div>
 <div id="testing-model" class="section level3">
 <h3>Testing model</h3>
-<p>Let’s test on the testing data</p>
+<p>For the testing model we will use a testing data set already prepared for by the course and loaded into the data folder. The models also were pre-built with the full data set as well. Thsi is just for the sake of convenience since the models may take a long time to run due to the bootstrapping.</p>
+<p>I will load them now into the environment now.</p>
+<p>The dataset</p>
+<pre class="r"><code>cars_test_bt &lt;- readr::read_rds(&quot;data/c1_testing_full.rds&quot;) </code></pre>
+<pre class="r"><code>cars_test_bt %&gt;% 
+  glimpse()
+#&gt; Observations: 228
+#&gt; Variables: 13
+#&gt; $ Displacement              &lt;dbl&gt; 6.2, 3.9, 2.0, 3.0, 2.0, 3.0, 6.5, 5.2, 2...
+#&gt; $ Cylinders                 &lt;int&gt; 8, 8, 4, 6, 4, 6, 12, 10, 4, 8, 8, 8, 12,...
+#&gt; $ Gears                     &lt;int&gt; 7, 7, 8, 8, 8, 6, 7, 7, 6, 7, 7, 7, 7, 6,...
+#&gt; $ Transmission              &lt;chr&gt; &quot;Manual&quot;, &quot;Manual&quot;, &quot;Automatic&quot;, &quot;Automat...
+#&gt; $ MPG                       &lt;int&gt; 18, 18, 26, 23, 26, 18, 12, 15, 29, 17, 1...
+#&gt; $ Aspiration                &lt;chr&gt; &quot;Turbocharged/Supercharged&quot;, &quot;Turbocharge...
+#&gt; $ `Lockup Torque Converter` &lt;chr&gt; &quot;N&quot;, &quot;N&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;N&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;...
+#&gt; $ Drive                     &lt;chr&gt; &quot;2-Wheel Drive, Rear&quot;, &quot;2-Wheel Drive, Re...
+#&gt; $ `Max Ethanol`             &lt;int&gt; 10, 10, 15, 15, 15, 15, 15, 15, 10, 10, 1...
+#&gt; $ `Recommended Fuel`        &lt;chr&gt; &quot;Premium Unleaded Required&quot;, &quot;Premium Unl...
+#&gt; $ `Intake Valves Per Cyl`   &lt;int&gt; 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,...
+#&gt; $ `Exhaust Valves Per Cyl`  &lt;int&gt; 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2,...
+#&gt; $ `Fuel injection`          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Di...</code></pre>
+<p>Now I wil load the pre-made models</p>
+<pre class="r"><code>cars_lm_bt &lt;- readr::read_rds(&quot;data/cars_lm_bt.rds&quot;)
+cars_rf_bt &lt;- readr::read_rds(&quot;data/cars_rf_bt.rds&quot;)</code></pre>
+<p>Now let’s build the results table</p>
+<pre class="r"><code>results_test_bt &lt;- cars_test_bt %&gt;% 
+  mutate(log_mpg = log(MPG),
+         lm_mpg = predict(cars_lm_bt, cars_test_bt),
+         rf_mpg = predict(cars_rf_bt, cars_test_bt)) %&gt;% 
+  select(MPG, log_mpg, lm_mpg, rf_mpg, everything())</code></pre>
+<pre class="r"><code>results_test_bt %&gt;% 
+  glimpse()
+#&gt; Observations: 228
+#&gt; Variables: 16
+#&gt; $ MPG                       &lt;int&gt; 18, 18, 26, 23, 26, 18, 12, 15, 29, 17, 1...
+#&gt; $ log_mpg                   &lt;dbl&gt; 2.890372, 2.890372, 3.258097, 3.135494, 3...
+#&gt; $ lm_mpg                    &lt;dbl&gt; 2.790370, 2.999073, 3.223341, 3.087742, 3...
+#&gt; $ rf_mpg                    &lt;dbl&gt; 2.807829, 2.880009, 3.269779, 3.111423, 3...
+#&gt; $ Displacement              &lt;dbl&gt; 6.2, 3.9, 2.0, 3.0, 2.0, 3.0, 6.5, 5.2, 2...
+#&gt; $ Cylinders                 &lt;int&gt; 8, 8, 4, 6, 4, 6, 12, 10, 4, 8, 8, 8, 12,...
+#&gt; $ Gears                     &lt;int&gt; 7, 7, 8, 8, 8, 6, 7, 7, 6, 7, 7, 7, 7, 6,...
+#&gt; $ Transmission              &lt;chr&gt; &quot;Manual&quot;, &quot;Manual&quot;, &quot;Automatic&quot;, &quot;Automat...
+#&gt; $ Aspiration                &lt;chr&gt; &quot;Turbocharged/Supercharged&quot;, &quot;Turbocharge...
+#&gt; $ `Lockup Torque Converter` &lt;chr&gt; &quot;N&quot;, &quot;N&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;N&quot;, &quot;Y&quot;, &quot;Y&quot;, &quot;...
+#&gt; $ Drive                     &lt;chr&gt; &quot;2-Wheel Drive, Rear&quot;, &quot;2-Wheel Drive, Re...
+#&gt; $ `Max Ethanol`             &lt;int&gt; 10, 10, 15, 15, 15, 15, 15, 15, 10, 10, 1...
+#&gt; $ `Recommended Fuel`        &lt;chr&gt; &quot;Premium Unleaded Required&quot;, &quot;Premium Unl...
+#&gt; $ `Intake Valves Per Cyl`   &lt;int&gt; 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,...
+#&gt; $ `Exhaust Valves Per Cyl`  &lt;int&gt; 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2,...
+#&gt; $ `Fuel injection`          &lt;chr&gt; &quot;Direct ignition&quot;, &quot;Direct ignition&quot;, &quot;Di...</code></pre>
+<p>Now we can compare the models</p>
+<pre class="r"><code>yardstick::metrics(results_test_bt, truth = &quot;log_mpg&quot;, estimate = &quot;lm_mpg&quot;)
+#&gt; # A tibble: 3 x 3
+#&gt;   .metric .estimator .estimate
+#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+#&gt; 1 rmse    standard      0.0934
+#&gt; 2 rsq     standard      0.844 
+#&gt; 3 mae     standard      0.0728</code></pre>
+<pre class="r"><code>yardstick::metrics(results_test_bt, truth = &quot;log_mpg&quot;, estimate = &quot;rf_mpg&quot;)
+#&gt; # A tibble: 3 x 3
+#&gt;   .metric .estimator .estimate
+#&gt;   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+#&gt; 1 rmse    standard      0.0690
+#&gt; 2 rsq     standard      0.916 
+#&gt; 3 mae     standard      0.0503</code></pre>
+<p>I want to build a tbl for me to compare each metric one by one.</p>
+<p>I will add column to each metric indicating the name of the model</p>
+<pre class="r"><code>lm_metric &lt;- results_test_bt %&gt;% 
+  metrics(truth = &quot;log_mpg&quot;, estimate = &quot;lm_mpg&quot;) %&gt;% 
+  mutate(model = &quot;linear model&quot;) %&gt;% 
+  select(-.estimator)</code></pre>
+<pre class="r"><code>lm_metric
+#&gt; # A tibble: 3 x 3
+#&gt;   .metric .estimate model       
+#&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;       
+#&gt; 1 rmse       0.0934 linear model
+#&gt; 2 rsq        0.844  linear model
+#&gt; 3 mae        0.0728 linear model</code></pre>
+<pre class="r"><code>rf_metric &lt;- results_test_bt %&gt;% 
+  metrics(truth = &quot;log_mpg&quot;, estimate = &quot;rf_mpg&quot;) %&gt;% 
+  mutate(model = &quot;Random Forest&quot;) %&gt;% 
+  select(-.estimator)</code></pre>
+<pre class="r"><code>rf_metric
+#&gt; # A tibble: 3 x 3
+#&gt;   .metric .estimate model        
+#&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;        
+#&gt; 1 rmse       0.0690 Random Forest
+#&gt; 2 rsq        0.916  Random Forest
+#&gt; 3 mae        0.0503 Random Forest</code></pre>
+<p>Now let’s combine them in one tbl</p>
+<pre class="r"><code>bt_metrics &lt;- bind_rows(lm_metric, rf_metric) %&gt;% 
+   pivot_wider(names_from = .metric,
+              values_from = .estimate)</code></pre>
+<pre class="r"><code>bt_metrics
+#&gt; # A tibble: 2 x 4
+#&gt;   model           rmse   rsq    mae
+#&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1 linear model  0.0934 0.844 0.0728
+#&gt; 2 Random Forest 0.0690 0.916 0.0503</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
