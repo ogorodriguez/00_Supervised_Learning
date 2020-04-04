@@ -336,55 +336,140 @@ car_train_1p %>%
 Let's run the models
 
 ```{r}
-cars_lm_bt <- train(log(mpg) ~ .,
+cars_1p_lm_bt <- train(log(mpg) ~ .,
                     method = "lm",
                     data = car_train_1p,
                     trControl = trainControl(method = "boot"))
 ```
 
 ```{r}
-cars_lm_bt
+cars_1p_lm_bt
 ```
 
-
 ```{r}
-cars_rf_bt <- train(log(mpg) ~ .,
+cars_1p_rf_bt <- train(log(mpg) ~ .,
                     method = "rf",
                     data = car_train_1p,
                     trControl = trainControl(method = "boot"))
 ```
 
 ```{r}
-cars_rf_bt
+cars_1p_rf_bt
 ```
 
 Let's compare the training models with bootstrapping in the dataset
 
 ```{r}
-results_train_bt <- car_train_1p %>% 
+results_train_1p_bt <- car_train_1p %>% 
   mutate(mpg_log = log(mpg),
-         lreg = predict(cars_lm_bt, car_train_1p),
-         rfor = predict(cars_rf_bt, car_train_1p)) %>% 
+         lreg = predict(cars_1p_lm_bt, car_train_1p),
+         rfor = predict(cars_1p_rf_bt, car_train_1p)) %>% 
   select(mpg, mpg_log, lreg, rfor, everything())
 ```
 
 ```{r}
-results_train_bt
+results_train_1p_bt
 ```
 
 Let's check how efficient are the models 
 
 ```{r}
-yardstick::metrics(results_train_bt, truth = mpg_log, estimate = lreg)
+yardstick::metrics(results_train_1p_bt, truth = mpg_log, estimate = lreg)
 ```
 
 ```{r}
-yardstick::metrics(results_train_bt, truth = mpg_log, estimate = rfor)
+yardstick::metrics(results_train_1p_bt, truth = mpg_log, estimate = rfor)
 ```
 
 ### Testing model
 
-Let's test on the testing data
+For the testing model we will use a testing data set already prepared for by the course and loaded into the data folder.  The models also were pre-built with the full data set as well.  Thsi is just for the sake of convenience since the models may take a long time to run due to the bootstrapping.
+
+I will load them now into the environment now.
+
+The dataset
+
+```{r}
+cars_test_bt <- readr::read_rds("data/c1_testing_full.rds") 
+```
+
+```{r}
+cars_test_bt %>% 
+  glimpse()
+```
+
+Now I wil load the pre-made models
+
+```{r}
+cars_lm_bt <- readr::read_rds("data/cars_lm_bt.rds")
+cars_rf_bt <- readr::read_rds("data/cars_rf_bt.rds")
+```
+
+Now let's build the results table
+
+```{r}
+results_test_bt <- cars_test_bt %>% 
+  mutate(log_mpg = log(MPG),
+         lm_mpg = predict(cars_lm_bt, cars_test_bt),
+         rf_mpg = predict(cars_rf_bt, cars_test_bt)) %>% 
+  select(MPG, log_mpg, lm_mpg, rf_mpg, everything())
+```
+
+```{r}
+results_test_bt %>% 
+  glimpse()
+```
+
+Now we can compare the models
+
+```{r}
+yardstick::metrics(results_test_bt, truth = "log_mpg", estimate = "lm_mpg")
+```
+
+
+```{r}
+yardstick::metrics(results_test_bt, truth = "log_mpg", estimate = "rf_mpg")
+```
+
+I want to build a tbl for me to compare each metric one by one.
+
+I will add column to each metric indicating the name of the model
+
+```{r}
+lm_metric <- results_test_bt %>% 
+  metrics(truth = "log_mpg", estimate = "lm_mpg") %>% 
+  mutate(model = "linear model") %>% 
+  select(-.estimator)
+```
+
+```{r}
+lm_metric
+```
+
+```{r}
+rf_metric <- results_test_bt %>% 
+  metrics(truth = "log_mpg", estimate = "rf_mpg") %>% 
+  mutate(model = "Random Forest") %>% 
+  select(-.estimator)
+```
+
+```{r}
+rf_metric
+```
+
+Now let's combine them in one tbl
+
+```{r}
+bt_metrics <- bind_rows(lm_metric, rf_metric) %>% 
+   pivot_wider(names_from = .metric,
+              values_from = .estimate)
+```
+
+```{r}
+bt_metrics
+```
+
+
 
 
 
