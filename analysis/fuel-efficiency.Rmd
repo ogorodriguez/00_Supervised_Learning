@@ -469,9 +469,19 @@ bt_metrics <- bind_rows(lm_metric, rf_metric) %>%
 bt_metrics
 ```
 
+## Graphing the models to compare
 
+The idea is to compare the models also graphically.  To see how the points lie next to the line of best fit.
 
-
+```{r}
+results_test_bt %>% 
+  gather(method, result, lm_mpg:rf_mpg) %>% 
+  ggplot(aes(log_mpg, result, color = method)) +
+    geom_point(size = 1.5, alpha = 0.5) + 
+    facet_wrap(~method) + 
+    geom_abline(lty = 2, color = "gray50") + 
+    geom_smooth(method = "lm")
+```
 
 
 
