@@ -475,7 +475,11 @@ The idea is to compare the models also graphically.  To see how the points lie n
 
 ```{r}
 results_test_bt %>% 
-  gather(method, result, lm_mpg:rf_mpg) %>% 
+ tidyr::pivot_longer(
+    cols = lm_mpg:rf_mpg,
+    names_to = "method",
+    values_to = "result"
+  )  %>% 
   ggplot(aes(log_mpg, result, color = method)) +
     geom_point(size = 1.5, alpha = 0.5) + 
     facet_wrap(~method) + 
